@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Fraction Formulator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="jquery.ui.touch-punch.min.js"></script>
+        <script src="jquery.alterclass.js"></script>
+        <link rel="stylesheet" href="fractions.css">
+        <script src="fractions.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    </head>
+    <body>
+        <div id="helpDialog" title="How to use" style="display:none;">
+            Welcome to the Fraction Formulator! Today you're going to build various
+            fractions.
+            <p>
+            You can either use the arrows or type in a number for the numerator
+            and denominator.
+            <p>
+            Your fraction will then be displayed in the form of a pizza and
+            a divided rectangle.
+            <p>
+            You can play for as little or as long as you want. There are no time
+            restrictions.
+            <center><button onclick="$('#helpDialog').dialog('close');">OK</button></center>
+        </div>
+        <div id="noDialog" title="No!" style="display:none;">
+            You're not allowed to make improper fractions (where the top number, or numerator
+            is larger than the bottom number, or denominator).
+            <center><button onclick="$('#noDialog').dialog('close');">OK</button></center>
+        </div>
+        <div id="header">Fraction Formulator</div>
+        <div class="main-screen">
+            <div id="both-chart-div">
+                <div id="chart-div">
+                    <canvas id="myChart"></canvas>
+                    <img id="chart-background" alt="pizza" src="pizza.svg"/>
+                </div>
+                <span style="width: 50px;"></span>
+                <div id="bar-chart-div">
+                    <div id="progressbar">
+                    </div>
+                </div>
+            </div>
+            <center id="fraction-maker-center">
+                <div style="height: 60px;"></div>
+                <div id="fraction-maker">
+                    <div class="fraction-part-container">
+                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="1" id="numerator" class="fraction-part"/>
+                        <div class="fraction-buttons">
+                            <button class="fraction-up-button" onclick="$('#numerator').spinner('stepUp'); $('#numerator').keyup();">&#9650;</button>
+                            <button class="fraction-down-button" onclick="$('#numerator').spinner('stepDown'); $('#numerator').keyup();">&#9660;</button>
+                        </div>
+                    </div>
+                    <div id="fraction-line"></div>
+                    <div class="fraction-part-container">
+                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="2" id="denominator" class="fraction-part"/>
+                        <div class="fraction-buttons">
+                            <button class="fraction-up-button" onclick="$('#denominator').spinner('stepUp'); $('#denominator').keyup();">&#9650;</button>
+                            <button class="fraction-down-button" onclick="$('#denominator').spinner('stepDown'); $('#denominator').keyup();">&#9660;</button>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </body>
+</html>
