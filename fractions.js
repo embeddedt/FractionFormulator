@@ -27,8 +27,8 @@ function updatePizza(amount, n, d) {
     pizzaChart.update();
 }
 
-function updateBar(n, d) {
-    $("#progressbar").empty();
+function updateBar(name, n, d) {
+    $(name).empty();
     n = d - n;
     for(var i = 1; i <= d; i++) {
         var div = document.createElement("div");
@@ -37,26 +37,37 @@ function updateBar(n, d) {
         else
             div.classList.add("progressbar-on");
         div.style.height = ((1 / d) * 100) + "%";
-        $("#progressbar")[0].appendChild(div);
+        $(name)[0].appendChild(div);
     }
 }
 
 function updateHeights() {
     var cw = $("#chart-div").width();
     $('#chart-div').css({'height':cw+'px'});
-    $("#bar-chart-div").css({ 'height' : cw + 'px' });
+    $(".bar-chart-div").css({ 'height' : cw + 'px' });
+    $("#eq-bar-chart-div").css({ 'height' : '200px' });
     $("#both-chart-div").css({ 'height' : cw + 'px' });
     if(pizzaChart)
         pizzaChart.update();
 }
 
+function parseMultiplier(value) {
+    var regexp = /\-?\d+/.exec(value);
+    return regexp ? parseInt(regexp[0]) : NaN;
+}
 $( window ).resize(updateHeights);
 $(function() {
+    $.widget( "ui.mult_spinner", $.ui.spinner, {
+        _format: function(value) { return 'x' + value; },
+
+        _parse: parseMultiplier
+    });
+    
     $( ".fraction-part" ).spinner({ min: 0, max: 40, step: 1 });
     $("#denominator").spinner("option", "min", 1);
-    $('.ui-spinner a.ui-spinner-button').css('display','none');
+    
     $( ".fraction-part").keypress(input_handler);
-    $( ".fraction-part").bind('keyup mouseup', function() {
+    $( ".fraction-part").bind('focusout keyup', function(event) {
         console.log("Change");
         var n = parseInt($("#numerator").val());
         var d = parseInt($("#denominator").val());
@@ -82,11 +93,36 @@ $(function() {
         }
         $("#numerator").spinner("option", "max", d);
         
+        $("#multiplier").mult_spinner("option", "max", Math.floor(40 / d));
         updatePizza(n / d, n, d);
-        updateBar(n, d);
+        updateBar("#main-progressbar", n, d);
+        
+        if(event.type === "focusout" || event.originalEvent === undefined) {
+            /* Now process the multiplier */
+            var mult = parseMultiplier($("#multiplier").val());
+            var mult_max = parseInt($("#multiplier").mult_spinner("option", "max"));
+            if(mult > mult_max) {
+                mult = mult_max;
+            }
+            if(mult < 1)
+                mult = 1;
+            if(isNaN(mult)) {
+                mult = 1;
+            }
+            $("#multiplier").val("x" + mult);
+            $("#eq-numerator").val(n * mult);
+            $("#eq-denominator").val(d * mult);
+            updateBar("#eq-progressbar", n * mult, d * mult);
+        }
     });
     $("#numerator").spinner("option", "max", $("#denominator").val());
     $("#denominator").spinner("option", "max", 40);
+    
+    /* Override spinner for multiplier */
+    $("#multiplier").spinner("destroy");
+    $("#multiplier").mult_spinner({ min: 0, max: 40, step: 1 });
+    
+    $('.ui-spinner a.ui-spinner-button').css('display','none');
     updateHeights();
     var ctx = document.getElementById('myChart').getContext('2d');
     document.getElementById('myChart').style.backgroundColor = 'rgba(0, 0, 0, 0)';
@@ -120,6 +156,16 @@ $(function() {
         }
     });
     updatePizza(0.5, 1, 2);
-    updateBar(1, 2);
-    $("#helpDialog").dialog({ modal: true });
+    updateBar("#main-progressbar", 1, 2);
+    
+    /*Trigger the update sequence*/
+    $("#numerator").keyup();
+    if(document.location.hash === "#equiv") {
+        $("#text-div").hide();
+        $("#all-charts-div").css({ 'min-width' : 545 + 'px' });
+        $("#eq-dialog").dialog({ modal: true});
+    } else {
+        $("#equivalent-fractions").hide();
+        $("#helpDialog").dialog({ modal: true });
+    }
 });

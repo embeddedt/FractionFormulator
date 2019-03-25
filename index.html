@@ -31,7 +31,18 @@ and open the template in the editor.
             <p>
             You can play for as little or as long as you want. There are no time
             restrictions.
+            <p>
             <center><button onclick="$('#helpDialog').dialog('close');">OK</button></center>
+        </div>
+        <div id="eq-dialog" title="How to use" style="display:none;">
+            You can now experiment with equivalent fractions as well!
+            <p>
+            Try adjusting the multiplier and see what happens.
+            <p>
+            Note: on small mobile devices, you may have to scroll or rotate your
+            device to see everything.
+            <p>
+            <center><button onclick="$('#eq-dialog').dialog('close');">OK</button></center>
         </div>
         <div id="noDialog" title="No!" style="display:none;">
             You're not allowed to make improper fractions (where the top number, or numerator
@@ -39,38 +50,74 @@ and open the template in the editor.
             <center><button onclick="$('#noDialog').dialog('close');">OK</button></center>
         </div>
         <div id="header">Fraction Formulator</div>
-        <div class="main-screen">
-            <div id="both-chart-div">
-                <div id="chart-div">
-                    <canvas id="myChart"></canvas>
-                    <img id="chart-background" alt="pizza" src="pizza.svg"/>
-                </div>
-                <span style="width: 50px;"></span>
-                <div id="bar-chart-div">
-                    <div id="progressbar">
+        <div class="scroll-container">
+            <div class="main-screen">
+                <div id="all-charts-div">
+                    <div class="both-chart-div" id="main-chart-div">
+                        <div id="chart-div">
+                            <canvas id="myChart"></canvas>
+                            <img id="chart-background" alt="pizza" src="pizza.svg"/>
+                        </div>
+                        <span style="width: 50px;"></span>
+                        <div id="main-bar-chart-div" class="bar-chart-div">
+                            <div id="main-progressbar" class="progressbar">
+                            </div>
+                        </div>
+                        <div class="line-break"></div>
+                        <div class="fraction-maker">
+                            <div class="fraction-part-container">
+                                <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="1" id="numerator" class="fraction-part"/>
+                                <div class="fraction-buttons">
+                                    <button class="fraction-up-button" onclick="$('#numerator').spinner('stepUp'); $('#numerator').keyup();">&#9650;</button>
+                                    <button class="fraction-down-button" onclick="$('#numerator').spinner('stepDown'); $('#numerator').keyup();">&#9660;</button>
+                                </div>
+                            </div>
+                            <div class="fraction-line"></div>
+                            <div class="fraction-part-container">
+                                <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="2" id="denominator" class="fraction-part"/>
+                                <div class="fraction-buttons">
+                                    <button class="fraction-up-button" onclick="$('#denominator').spinner('stepUp'); $('#denominator').keyup();">&#9650;</button>
+                                    <button class="fraction-down-button" onclick="$('#denominator').spinner('stepDown'); $('#denominator').keyup();">&#9660;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="equivalent-fractions">
+                        <div id="eq-holder-div">
+                            <div id="equals-div">
+                                =
+                                <div class="line-break"></div>
+                                <div class="fraction-part-container">
+                                    <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="x2" id="multiplier" class="fraction-part"/>
+                                    <div class="fraction-buttons">
+                                        <button class="fraction-up-button" onclick="$('#multiplier').mult_spinner('stepUp'); $('#multiplier').keyup();">&#9650;</button>
+                                        <button class="fraction-down-button" onclick="$('#multiplier').mult_spinner('stepDown'); $('#multiplier').keyup();">&#9660;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="both-chart-div" id="eq-chart-div">
+                                <div class="bar-chart-div">
+                                    <div id="eq-progressbar" class="progressbar">
+                                    </div>
+                                </div>
+                                <div class="line-break"></div>
+                                <div class="fraction-maker-no-buttons">
+                                    <div class="fraction-part-container-no-buttons">
+                                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="1" id="eq-numerator" class="fraction-part"/>
+                                    </div>
+                                    <div class="fraction-line" style="margin-left: 28px;"></div>
+                                    <div class="fraction-part-container-no-buttons">
+                                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="2" id="eq-denominator" class="fraction-part"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <center id="fraction-maker-center">
-                <div style="height: 60px;"></div>
-                <div id="fraction-maker">
-                    <div class="fraction-part-container">
-                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="1" id="numerator" class="fraction-part"/>
-                        <div class="fraction-buttons">
-                            <button class="fraction-up-button" onclick="$('#numerator').spinner('stepUp'); $('#numerator').keyup();">&#9650;</button>
-                            <button class="fraction-down-button" onclick="$('#numerator').spinner('stepDown'); $('#numerator').keyup();">&#9660;</button>
-                        </div>
-                    </div>
-                    <div id="fraction-line"></div>
-                    <div class="fraction-part-container">
-                        <input autocomplete="off" pattern="[0-9]{1,5}" type="text" value="2" id="denominator" class="fraction-part"/>
-                        <div class="fraction-buttons">
-                            <button class="fraction-up-button" onclick="$('#denominator').spinner('stepUp'); $('#denominator').keyup();">&#9650;</button>
-                            <button class="fraction-down-button" onclick="$('#denominator').spinner('stepDown'); $('#denominator').keyup();">&#9660;</button>
-                        </div>
-                    </div>
-                </div>
-            </center>
+            <div id="text-div">
+                <a href="#equiv" onclick="window.location.href += '#equiv'; location.reload();">Try Equivalent Fractions</a>
+            </div>
         </div>
     </body>
 </html>
