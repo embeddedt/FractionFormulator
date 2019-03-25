@@ -164,7 +164,9 @@ $(function() {
         $("#text-div").hide();
         $("#all-charts-div").css({ 'min-width' : 545 + 'px' });
         $("#eq-dialog").dialog({ modal: true});
+        $(".main-screen").addClass("eq-fract");
     } else {
+        $(".main-screen").addClass("no-eq-fract");
         $("#equivalent-fractions").hide();
         $("#helpDialog").dialog({ modal: true });
     }
